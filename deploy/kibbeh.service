@@ -1,0 +1,14 @@
+[Unit]
+Description=Kibbeh Next.js Frontend (Production)
+After=network.target
+
+[Service]
+Type=simple
+User=dogehouse
+WorkingDirectory=/opt/dogehouse/kibbeh
+ExecStart=/usr/bin/env bash ../deploy/start-kibbeh.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  shawarma:
+    build: ./shawarma
+    env_file:
+      - shawarma.env
+    depends_on:
+      - kousa
+      - rabbitmq
+
+  kousa:
+    build: ./kousa
+    env_file:
+      - kousa.env
+    ports:
+      - 4001:4001
+    depends_on:
+      - postgres
+      - rabbitmq
+
+  postgres:
+    env_file:
+      - pg.env
+
+  rabbitmq:
+    env_file:
+      - rabbit.env
+
+  adminer:
+    ports:
+      - 8080:8080

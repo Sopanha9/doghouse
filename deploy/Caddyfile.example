@@ -1,0 +1,16 @@
+{
+  # Replace with your email for ACME notifications.
+  email admin@example.com
+}
+
+# Frontend (kibbeh) served by local process on port 3000
+your-domain.com {
+  encode zstd gzip
+  reverse_proxy 127.0.0.1:3000
+}
+
+# API/WebSocket (kousa)
+api.your-domain.com {
+  encode zstd gzip
+  reverse_proxy 127.0.0.1:4001
+}

@@ -1,0 +1,81 @@
+services:
+  postgres:
+    image: postgres:13-alpine
+    restart: unless-stopped
+    env_file:
+      - ../pg.env
+    volumes:
+      - ../.docker/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    restart: unless-stopped
+    env_file:
+      - ../rabbit.env
+    volumes:
+      - ../.docker/rabbitmq/data/:/var/lib/rabbitmq/
+      - ../.docker/rabbitmq/logs/:/var/log/rabbitmq/
+    # Bind management ports to localhost so they are not public by default.
+    ports:
+      - 127.0.0.1:5672:5672
+      - 127.0.0.1:15672:15672
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  kousa:
+    build:
+      context: ../kousa
+    restart: unless-stopped
+    env_file:
+      - ../kousa.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    # Reverse proxy (Caddy/Nginx) should forward to this local-only port.
+    ports:
+      - 127.0.0.1:4001:4001
+    healthcheck:
+      test: ["CMD-SHELL", "bin/kousa ping || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  shawarma:
+    build:
+      context: ../shawarma
+    restart: unless-stopped
+    env_file:
+      - ../shawarma.env
+    depends_on:
+      kousa:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    # WebRTC media ports for mediasoup.
+    ports:
+      - 40000-49999:40000-49999/udp
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('net').connect(3000, '127.0.0.1').on('connect',()=>process.exit(0)).on('error',()=>process.exit(1))",
+        ]
+      interval: 20s
+      timeout: 5s
+      retries: 10
+      start_period: 30s

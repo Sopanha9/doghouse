@@ -1,8 +1,11 @@
 
-FROM node:14-alpine
+FROM node:14.21.3-bullseye
 WORKDIR /usr/src/app
-RUN apk add --update alpine-sdk && apk add linux-headers
-RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+# mediasoup v3.7 build expects a classic native toolchain and python on PATH.
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends python3 make g++ \
+	&& ln -sf /usr/bin/python3 /usr/bin/python \
+	&& rm -rf /var/lib/apt/lists/*
 
 COPY package.json package-lock.json ./
 
