@@ -5,7 +5,6 @@
     "packages": [
       "kebab",
       "kibbeh",
-      "dinner",
       "dolma"
     ],
     "nohoist": [
