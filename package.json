@@ -1,6 +1,9 @@
 {
   "name": "dogehouse",
   "private": true,
+  "engines": {
+    "node": "16.x"
+  },
   "workspaces": {
     "packages": [
       "kebab",

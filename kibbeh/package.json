@@ -5,7 +5,7 @@
   "scripts": {
     "staging": "cross-env NEXT_PUBLIC_IS_STAGING=true NEXT_PUBLIC_API_BASE_URL=https://doge-staging.stripcode.dev next dev",
     "dev": "next dev",
-    "build": "yarn --cwd ../kebab build && yarn --cwd ../dolma build && next build",
+    "build": "next build",
     "start": "next start",
     "compile": "tsc",
     "sync:i18": "ts-node --project scripts/tsconfig.json scripts/syncTranslations.ts",
