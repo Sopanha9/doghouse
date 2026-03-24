@@ -1,5 +1,5 @@
 {
-  "buildCommand": "yarn --cwd kebab build && yarn --cwd dolma build && yarn --cwd kibbeh build",
+  "buildCommand": "cd kebab && yarn build && cd ../dolma && yarn build && cd ../kibbeh && yarn build",
   "outputDirectory": "kibbeh/.next",
   "installCommand": "yarn install"
 }
