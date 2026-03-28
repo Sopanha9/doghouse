@@ -238,6 +238,52 @@ defmodule Beef.Mutations.Users do
     end
   end
 
+  def google_find_or_create(user, google_access_token) do
+    googleId = user["sub"]
+
+    db_user =
+      from(u in User,
+        where: u.googleId == ^googleId,
+        limit: 1
+      )
+      |> Repo.one()
+
+    if db_user do
+      if is_nil(db_user.googleId) do
+        from(u in User,
+          where: u.id == ^db_user.id,
+          update: [
+            set: [
+              googleId: ^googleId,
+              googleAccessToken: ^google_access_token
+            ]
+          ]
+        )
+        |> Repo.update_all([])
+      end
+
+      {:find, db_user}
+    else
+      {:create,
+       Repo.insert!(
+         %User{
+           username: Kousa.Utils.Random.big_ascii_id(),
+           googleId: googleId,
+           email: if(user["email"] == "", do: nil, else: user["email"]),
+           googleAccessToken: google_access_token,
+           avatarUrl: user["picture"],
+           displayName:
+             if(is_nil(user["name"]) or String.trim(user["name"]) == "",
+               do: "Novice Doge",
+               else: user["name"]
+             ),
+           hasLoggedIn: true
+         },
+         returning: true
+       )}
+    end
+  end
+
   def create_bot(owner_id, username) do
     %User{}
     |> User.edit_changeset(%{

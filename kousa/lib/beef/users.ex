@@ -64,5 +64,6 @@ defmodule Beef.Users do
   defdelegate twitter_find_or_create(user), to: Beef.Mutations.Users
   defdelegate set_ip(user_id, ip), to: Beef.Mutations.Users
   defdelegate github_find_or_create(user, github_access_token), to: Beef.Mutations.Users
+  defdelegate google_find_or_create(user, google_access_token), to: Beef.Mutations.Users
   defdelegate discord_find_or_create(user, discord_access_token), to: Beef.Mutations.Users
 end

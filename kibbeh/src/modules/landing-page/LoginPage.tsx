@@ -5,7 +5,8 @@ import { LgLogo } from "../../icons";
 import SvgSolidBug from "../../icons/SolidBug";
 import SvgSolidDiscord from "../../icons/SolidDiscord";
 import SvgSolidGitHub from "../../icons/SolidGitHub";
-import SvgSolidTwitter from "../../icons/SolidTwitter";
+import SvgSolidX from "../../icons/SolidX";
+import SvgSolidGoogle from "../../icons/SolidGoogle";
 import {
   apiBaseUrl,
   isStaging,
@@ -142,8 +143,14 @@ export const LoginPage: React.FC = () => {
             <LoginButton
               oauthUrl={`${apiBaseUrl}/auth/twitter/web${queryParams}`}
             >
-              <SvgSolidTwitter width={20} height={20} />
-              Log in with Twitter
+              <SvgSolidX width={20} height={20} />
+              Log in with X
+            </LoginButton>
+            <LoginButton
+              oauthUrl={`${apiBaseUrl}/auth/google/web${queryParams}`}
+            >
+              <SvgSolidGoogle width={20} height={20} />
+              Log in with Google
             </LoginButton>
             {!isElectron() ? (
               <LoginButton

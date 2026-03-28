@@ -30,10 +30,12 @@ defmodule Beef.Schemas.User do
           id: Ecto.UUID.t(),
           twitterId: String.t(),
           githubId: String.t(),
+          googleId: String.t(),
           discordId: String.t(),
           username: String.t(),
           email: String.t(),
           githubAccessToken: String.t(),
+          googleAccessToken: String.t(),
           discordAccessToken: String.t(),
           displayName: String.t(),
           avatarUrl: String.t(),
@@ -62,10 +64,12 @@ defmodule Beef.Schemas.User do
   schema "users" do
     field(:githubId, :string)
     field(:twitterId, :string)
+    field(:googleId, :string)
     field(:discordId, :string)
     field(:username, :string)
     field(:email, :string)
     field(:githubAccessToken, :string)
+    field(:googleAccessToken, :string)
     field(:discordAccessToken, :string)
     field(:displayName, :string)
     field(:avatarUrl, :string)

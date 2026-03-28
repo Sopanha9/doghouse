@@ -6,6 +6,7 @@ defmodule Broth do
   alias Broth.Routes.DevOnly
   alias Broth.Routes.GitHubAuth
   alias Broth.Routes.TwitterAuth
+  alias Broth.Routes.GoogleAuth
   alias Broth.Routes.DiscordAuth
   alias Broth.Routes.ScheduledRoom
   alias Broth.Routes.Room
@@ -47,6 +48,7 @@ defmodule Broth do
 
   forward("/auth/github", to: GitHubAuth)
   forward("/auth/twitter", to: TwitterAuth)
+  forward("/auth/google", to: GoogleAuth)
   forward("/auth/discord", to: DiscordAuth)
   # forward("/me", to: Kousa.Me)
   forward("/dev", to: DevOnly)

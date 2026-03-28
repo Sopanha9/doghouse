@@ -13,7 +13,9 @@ services:
     env_file: 
       - shawarma.env
   kousa:
-    image: dogehouse/kousa
+    build: 
+      context: ./kousa
+      dockerfile: Dockerfile
     env_file: 
       - kousa.env
   postgres:
