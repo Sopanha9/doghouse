@@ -3,6 +3,7 @@ version: "3"
 services:
   shawarma:
     build: ./shawarma
+    network_mode: "host"
     env_file:
       - shawarma.env
     depends_on:
