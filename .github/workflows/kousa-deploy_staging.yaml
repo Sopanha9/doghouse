@@ -3,18 +3,22 @@ on:
   push:
     paths:
       - 'kousa/lib/**'
+      - 'kousa/config/**'
     branches:
       - staging
-
 jobs:
   build:
-    name: Build
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: executing remote ssh commands using password
+      - name: Deploy to server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          script: cd dogehouse/kousa && git pull origin staging && docker build -t benawad/kousa:0.0.1 . && docker tag benawad/kousa:0.0.1 dokku/doge-staging:latest && dokku tags:deploy doge-staging latest
+          script: |
+            cd /root/dogehouse
+            git pull origin staging
+            docker compose build kousa
+            docker compose up -d kousa

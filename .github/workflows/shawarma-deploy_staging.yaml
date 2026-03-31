@@ -5,16 +5,19 @@ on:
       - 'shawarma/src/**'
     branches:
       - staging
-
 jobs:
   build:
-    name: Build
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: executing remote ssh commands using password
+      - name: Deploy to server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          script: cd dogehouse/kousa && git pull origin staging && source ~/.nvm/nvm.sh && nvm use 14 && cd ../shawarma && yarn install && npm run build && pm2 restart dist/index.js
+          script: |
+            cd /root/dogehouse
+            git pull origin staging
+            docker compose build shawarma
+            docker compose up -d shawarma
