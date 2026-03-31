@@ -9,6 +9,8 @@ services:
     depends_on:
       - kousa
       - shawarma
+    networks:
+      - dogehouse
     restart: always
 
   shawarma:
@@ -27,6 +29,8 @@ services:
     depends_on:
       - postgres
       - rabbitmq
+    networks:
+      - dogehouse
     restart: always
 
   postgres:
@@ -35,21 +39,33 @@ services:
       - pg.env
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dogehouse
     restart: always
 
   rabbitmq:
     image: rabbitmq:3-management
     env_file:
       - rabbit.env
-    ports:
-      - "5672:5672"
+    networks:
+      dogehouse:
+        ipv4_address: 172.20.0.10
     restart: always
 
   adminer:
     image: adminer
     expose:
       - "8080"
+    networks:
+      - dogehouse
     restart: always
+
+networks:
+  dogehouse:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
 
 volumes:
   postgres_data:

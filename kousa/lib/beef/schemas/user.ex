@@ -71,8 +71,6 @@ defmodule Beef.Schemas.User do
     field(:githubAccessToken, :string)
     field(:googleAccessToken, :string)
     field(:discordAccessToken, :string)
-    field(:googleId, :string)
-    field(:googleAccessToken, :string)
     field(:displayName, :string)
     field(:avatarUrl, :string)
     field(:bannerUrl, :string)
